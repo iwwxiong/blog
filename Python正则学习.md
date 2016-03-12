@@ -6,8 +6,49 @@
 
 
 ----------
+## 0x01 Python正则语法介绍
+> 基本的语法规则这里不错细致讲解，可查看下图![Python正则对照表](http://7xrszf.com1.z0.glb.clouddn.com/Python%E6%AD%A3%E5%88%99%E5%AF%B9%E7%85%A7%E8%A1%A8.png)
+### 主要讲解下逻辑分组和特殊构造
+> `|` 将两个匹配条件进行逻辑“或”（Or）运算
+>	
+	>>> re.compile(r'wwxiong|teddy').search('wwxiong')
+	<_sre.SRE_Match object; span=(0, 7), match='wwxiong'>
+	>>> re.compile(r'wwxiong|teddy').search('teddy')
+	<_sre.SRE_Match object; span=(0, 5), match='teddy'>
+> `()` 括号内的表达式作为一个分组，一个正则表达式可以包含多个分组，从左至右分别用编号1,2,3…9表示各个分组，分组后可以接数量词*、+、?、{n}…等，另外表达式中的 | 只对分组内有效
+>
+	>>> re.compile(r'(w){2}xiong').search('wwxiong')
+	<_sre.SRE_Match object; span=(0, 7), match='wwxiong'>
+> `(?P<name>)` 命名分组，这是一个python扩展语法，它为分组指定了一个name的分组名。对命名分组的逆向引用，即引用名为name的这个分组的匹配结果
+>
+	>>> re.compile(r'(?P<name>(w){2}xiong)-(?P<age>\d+)').search('wwxiong-26')
+	<_sre.SRE_Match object; span=(0, 10), match='wwxiong-26'>
+> `(?:)` 括号内的表达式不作为分组，没有分组编号，但可以后接数量词，表达式中可以有“或逻辑”。
+>
+	>>> re.compile(r'(?:wwxiong){2}').search('wwxiong'*2)
+	<_sre.SRE_Match object; span=(0, 14), match='wwxiongwwxiong'>
+> `(?#)` #后面…是注释内容
+> 
+	>>> re.compile(r'\w+(?#name)').search('wwxiong')
+	<_sre.SRE_Match object; span=(0, 7), match='wwxiong'>
+> `(?=)` 正向肯定预查，之后的字符必须要匹配表达式才能匹配成功，它不会消耗匹配的字符串，只作为肯定。
+> 
+	>>> re.compile(r'\w{2}(?=xiong)').search('wwxiong')
+	<_sre.SRE_Match object; span=(0, 2), match='ww'>
+> `(?!)` 正向否定预查，之后的字符必须要不匹配表达式才视为有效，它不会消耗匹配的字符串，只作为否定。
+>
+	>>> re.compile(r'\ww(?!xiong)').search('wwxiong')
+	>>> 
+> `(?<=)` 反向肯定预查，与正向类似只是方向相反。
+> 
+	>>> re.compile(r'(?<=wwxiong)\d+').search('wwxiong123')
+	<_sre.SRE_Match object; span=(7, 10), match='123'>
+> `(?<!)` 反向否定预查，与正向类似只是方向相反。
+> 
+	>>> re.compile(r'(?<!wwxiong)\d').search('wwxiong1')
+	>>> 
 
-## re模块几种函数介绍
+## 0x02 Python `re` 模块几种函数介绍
 
 ### re.search和re.match
 
