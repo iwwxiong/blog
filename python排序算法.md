@@ -332,4 +332,4 @@
 >###运行时间
 >下面截图是上面算法对10000随机整数进行排序所花费时间结果。
 ![](http://7xrszf.com1.z0.glb.clouddn.com/sort_timer.png)  
->总体来说还是快速排序效果最佳。（时间因素受作者代码质量影响。--！）
+>总体来说还是快速排序效果最佳。（时间因素受作者代码质量影响。--！）。[源代码地址。](https://github.com/dracarysX/blog/blob/master/python_sort.py)
