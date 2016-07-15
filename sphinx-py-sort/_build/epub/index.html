@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python排序算法</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body role="document">
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="sorts/bubble.html" title="冒泡排序"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">python_sort 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python">
+<h1>Python排序算法</h1>
+<p>经典排序算法在面试中占有很大的比重，也是基础，为了未雨绸缪，最近整理并用 <code class="docutils literal"><span class="pre">Python</span></code> 实现了八大经典排序算法，包括冒泡排序、插入排序、选择排序、希尔排序、归并排序、快速排序、堆排序、基数排序。希望能帮助到有需要的同学。之所以用 <code class="docutils literal"><span class="pre">Python</span></code> 实现，主要是因为它更接近伪代码，能用更少的代码实现算法，更利于理解。同时，也是我主要使用的语言。</p>
+<p>在开始算法介绍前，我们先介绍个小工具:</p>
+<div class="section" id="id1">
+<h2>函数计时器</h2>
+<p>下面是 <code class="docutils literal"><span class="pre">Python</span></code> 实现的一个建议函数计时器:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计时器</span>
+<span class="sd">    @param {function} func</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">u&#39;Function </span><span class="si">{}</span><span class="s1"> spend </span><span class="si">{}</span><span class="s1"> seconds.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</pre></div>
+</div>
+<p>PS：有时候装饰器碰到递归函数就尴尬了，此时我们简单在递归函数外面套一层函数然后再使用装饰器即可。可参考 <a class="reference external" href="http://2hwp.com/2015/08/03/Python-decorator-recursion/">解决方案</a><span class="link-target"> [http://2hwp.com/2015/08/03/Python-decorator-recursion/]</span> 。</p>
+</div>
+<div class="section" id="id3">
+<h2>排序算法</h2>
+<p>下面开始正式介绍排序算法：</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sorts/bubble.html">冒泡排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/insertion.html">插入排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/selection.html">选择排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/quick.html">快速排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/merge.html">归并排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/heap.html">堆排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/shell.html">希尔排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/radix.html">基数排序</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary</h2>
+<p><strong>关于稳定性</strong> ：</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>稳定的排序算法：</dt>
+<dd><a class="reference internal" href="sorts/bubble.html#bubble-sort"><span class="std std-ref">冒泡排序</span></a>，
+<a class="reference internal" href="sorts/insertion.html#insertion-sort"><span class="std std-ref">插入排序</span></a>，
+<a class="reference internal" href="sorts/merge.html#merge-sort"><span class="std std-ref">归并排序</span></a>，
+<a class="reference internal" href="sorts/radix.html#radix-sort"><span class="std std-ref">基数排序</span></a>。</dd>
+<dt>不是稳定的排序算法：</dt>
+<dd><a class="reference internal" href="sorts/selection.html#selection-sort"><span class="std std-ref">选择排序</span></a>，
+<a class="reference internal" href="sorts/quick.html#quick-sort"><span class="std std-ref">快速排序</span></a>，
+<a class="reference internal" href="sorts/shell.html#shell-sort"><span class="std std-ref">希尔排序</span></a>，
+<a class="reference internal" href="sorts/heap.html#heap-sort"><span class="std std-ref">堆排序</span></a>。</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, dracarysX.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

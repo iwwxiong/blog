@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python排序算法 &mdash; python_sort 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="python_sort 1.0 documentation" href="#" />
+    <link rel="next" title="冒泡排序" href="sorts/bubble.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python">
+<h1>Python排序算法<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
+<p>经典排序算法在面试中占有很大的比重，也是基础，为了未雨绸缪，最近整理并用 <code class="docutils literal"><span class="pre">Python</span></code> 实现了八大经典排序算法，包括冒泡排序、插入排序、选择排序、希尔排序、归并排序、快速排序、堆排序、基数排序。希望能帮助到有需要的同学。之所以用 <code class="docutils literal"><span class="pre">Python</span></code> 实现，主要是因为它更接近伪代码，能用更少的代码实现算法，更利于理解。同时，也是我主要使用的语言。</p>
+<p>在开始算法介绍前，我们先介绍个小工具:</p>
+<div class="section" id="id1">
+<h2>函数计时器<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>下面是 <code class="docutils literal"><span class="pre">Python</span></code> 实现的一个建议函数计时器:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计时器</span>
+<span class="sd">    @param {function} func</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">u&#39;Function </span><span class="si">{}</span><span class="s1"> spend </span><span class="si">{}</span><span class="s1"> seconds.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</pre></div>
+</div>
+<p>PS：有时候装饰器碰到递归函数就尴尬了，此时我们简单在递归函数外面套一层函数然后再使用装饰器即可。可参考 <a class="reference external" href="http://2hwp.com/2015/08/03/Python-decorator-recursion/">解决方案</a> 。</p>
+</div>
+<div class="section" id="id3">
+<h2>排序算法<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>下面开始正式介绍排序算法：</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sorts/bubble.html">冒泡排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/insertion.html">插入排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/selection.html">选择排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/quick.html">快速排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/merge.html">归并排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/heap.html">堆排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/shell.html">希尔排序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sorts/radix.html">基数排序</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p><strong>关于稳定性</strong> ：</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>稳定的排序算法：</dt>
+<dd><a class="reference internal" href="sorts/bubble.html#bubble-sort"><span class="std std-ref">冒泡排序</span></a>，
+<a class="reference internal" href="sorts/insertion.html#insertion-sort"><span class="std std-ref">插入排序</span></a>，
+<a class="reference internal" href="sorts/merge.html#merge-sort"><span class="std std-ref">归并排序</span></a>，
+<a class="reference internal" href="sorts/radix.html#radix-sort"><span class="std std-ref">基数排序</span></a>。</dd>
+<dt>不是稳定的排序算法：</dt>
+<dd><a class="reference internal" href="sorts/selection.html#selection-sort"><span class="std std-ref">选择排序</span></a>，
+<a class="reference internal" href="sorts/quick.html#quick-sort"><span class="std std-ref">快速排序</span></a>，
+<a class="reference internal" href="sorts/shell.html#shell-sort"><span class="std std-ref">希尔排序</span></a>，
+<a class="reference internal" href="sorts/heap.html#heap-sort"><span class="std std-ref">堆排序</span></a>。</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python排序算法</a><ul>
+<li><a class="reference internal" href="#id1">函数计时器</a></li>
+<li><a class="reference internal" href="#id3">排序算法</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="sorts/bubble.html" title="next chapter">冒泡排序</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, dracarysX.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

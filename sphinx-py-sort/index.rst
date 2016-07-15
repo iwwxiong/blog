@@ -1,0 +1,66 @@
+.. python_sort documentation master file, created by
+   sphinx-quickstart on Fri Jul 15 16:00:03 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Python排序算法
+==============
+
+经典排序算法在面试中占有很大的比重，也是基础，为了未雨绸缪，最近整理并用 ``Python`` 实现了八大经典排序算法，包括冒泡排序、插入排序、选择排序、希尔排序、归并排序、快速排序、堆排序、基数排序。希望能帮助到有需要的同学。之所以用 ``Python`` 实现，主要是因为它更接近伪代码，能用更少的代码实现算法，更利于理解。同时，也是我主要使用的语言。
+
+在开始算法介绍前，我们先介绍个小工具:
+
+函数计时器
+----------
+
+下面是 ``Python`` 实现的一个建议函数计时器::
+
+    def timer(func):
+        """
+        计时器
+        @param {function} func
+        """
+        @functools.wraps(func)
+        def decorator(*args, **kwargs):
+            start = datetime.datetime.now()
+            f = func(*args, **kwargs)
+            end = datetime.datetime.now()
+            print (u'Function {} spend {} seconds.'.format(func.__name__, (end-start).seconds))
+            return f
+        return decorator
+
+PS：有时候装饰器碰到递归函数就尴尬了，此时我们简单在递归函数外面套一层函数然后再使用装饰器即可。可参考 `解决方案 <http://2hwp.com/2015/08/03/Python-decorator-recursion/>`_ 。
+
+排序算法
+--------
+
+下面开始正式介绍排序算法：
+
+.. toctree::
+    :maxdepth: 1
+
+    sorts/bubble
+    sorts/insertion
+    sorts/selection
+    sorts/quick
+    sorts/merge
+    sorts/heap
+    sorts/shell
+    sorts/radix
+
+Summary
+-------
+
+**关于稳定性** ：
+
+    稳定的排序算法：
+        :ref:`冒泡排序<Bubble Sort>`，
+        :ref:`插入排序<Insertion Sort>`，
+        :ref:`归并排序<Merge Sort>`，
+        :ref:`基数排序<Radix Sort>`。
+
+    不是稳定的排序算法：
+        :ref:`选择排序<Selection Sort>`，
+        :ref:`快速排序<Quick Sort>`，
+        :ref:`希尔排序<Shell Sort>`，
+        :ref:`堆排序<Heap Sort>`。
