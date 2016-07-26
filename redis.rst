@@ -26,7 +26,7 @@ Radis安装，配置
 unubtu安装
 ^^^^^^^^^^^
 
-::
+ubuntu下安装命令::
     sudo apt-get update
     sudo apt-get install redis-server
     # 测试连接
