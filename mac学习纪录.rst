@@ -142,3 +142,40 @@ Redis安装
     $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 
 Mac下redis客户端没看到什么合适的，暂时使用 `medis <https://github.com/luin/medis>`_ 。
+
+MPV安装
+--------
+
+MPV是一款免费，开源的视频播放器，mpv fork 自 Mplayer 和 Mplayer2，是现在唯一仍在活跃开发的 Mplayer 系的播放器，大部分原 Mplayer 社区的开发者都已经转到 mpv 的开发上了。mpv 以 ffmpeg 为解码器，可以调用 OS X 平台的硬件加速解码，支持 ass 字幕，有高级 OpenGL scale 算法，还支持 lua 扩展脚本。
+
+安装
+>>>>
+
+.. code::
+
+    brew install mpv --with-bundle
+    brew linkapps mpv
+
+这样 Homebrew 会自动在 /Applications 下创建一个到 mpv.app 的软链。
+
+指定默认打开脚本::
+
+    EXTS=( 3GP ASF AVI FLV M4V MKV MOV MP4 MPEG MPG MPG2 MPG4 RMVB WMV MTS )
+
+    brew install duti
+
+    for ext in ${EXTS[@]}
+    do
+        lower=$(echo $ext | awk '{print tolower($0)}')
+        duti -s io.mpv $ext all
+        duti -s io.mpv $lower all
+    done
+
+配置
+>>>>>
+
+mpv 的配置文件在 ``~/.config/mpv/`` 里。``mpv.conf`` 是一些基本的配置，``input.conf`` 是播放过程中一些操作快捷键的设置，``lua-settings/osc.conf`` ，是播放器控制 UI 自定义设置。
+
+另外，可以使用下面命令将 ``rmvb`` 格式视频转换成 ``mp4`` 格式::
+
+    ffmpeg -i input.rmvb -c:v libx264 -preset veryfast -crf 18 -c:a copy output.mp4

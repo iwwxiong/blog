@@ -92,7 +92,9 @@ INNER JOIN(连接)
 
 ``SQL JOIN`` 子句用于把来自两个或多个表的行结合起来， ``SQL INNER JOIN`` 从多个表中返回满足 ``JOIN`` 条件的所有行。
 
-.. image:: ./_static/img/mysql/innerjoin.gif
+.. image:: _static/img/mysql/innerjoin.gif
+
+.. code::
 
     SELECT U.`name`, U.age, P.email, P.sex, P.wechat
     FROM `User` AS U
@@ -110,6 +112,8 @@ LEFT JOIN(左连接)
 ``LEFT JOIN` 关键字从左表（table1）返回所有的行，即使右表（table2）中没有匹配。如果右表中没有匹配，则结果为 ``NULL``。
 
 .. image:: ./_static/img/mysql/leftjoin.gif
+
+.. code::
 
     SELECT U.`name`, U.age, P.email, P.sex, P.wechat
     FROM `User` AS U
@@ -129,6 +133,8 @@ RIGHT JOIN(右连接)
 
 .. image:: ./_static/img/mysql/rightjoin.gif
 
+.. code::
+
     SELECT U.`name`, U.age, P.email, P.sex, P.wechat
     FROM `User` AS U
     RIGHT JOIn `Profile` AS P
@@ -142,22 +148,24 @@ null  null  xxx@example F    xxx
 UNION(联合)
 >>>>>>>>>>>>>
 
-``UNION`` 操作符用于合并两个或多个 SELECT 语句的结果集::
+``UNION`` 操作符用于合并两个或多个 SELECT 语句的结果集
+
+.. attention::
 
     请注意，``UNION`` 内部的每个 ``SELECT`` 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 ``SELECT`` 语句中的列的顺序必须相同。
 
-::
+.. code::
 
     SELECT U.`name` FROM `User` AS U WHERE U.`name` LIKE 'wwx%'
     UNION
     SELECT P.`name` FROM `Profile` AS P;
 
-==========
-wwxiong
-wwx
-dracarysX
-xxx
-==========
+.. list-table::
+
+    * - wwxiong
+    * - wwx
+    * - dracarysX
+    * - xxx
 
 ``UNION`` 不能用于列出两个表中所有的country。如果一些网站和APP来自同一个国家，每个国家只会列出一次。``UNION`` 只会选取不同的值。请使用 ``UNION ALL`` 来选取重复的值::
 
@@ -165,13 +173,13 @@ xxx
     UNION ALL
     SELECT P.`name` FROM `Profile` AS P;
 
-==========
-wwxiong
-wwxiong
-wwx
-dracarysX
-xxx
-==========
+.. list-table::
+
+    * - wwxiong
+    * - wwxiong
+    * - wwx
+    * - dracarysX
+    * - xxx
 
 函数
 -------
@@ -243,7 +251,7 @@ xhq         70    80    90    100
 批量操作
 -----------
 
-批量操作可以参考 `mysql批量操作<./mysql批量操作.md>`_
+批量操作可以参考 **<mysql批量操作.md>**
 
 常见操作
 -----------
