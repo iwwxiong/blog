@@ -102,14 +102,16 @@ INNER JOIN(连接)
     ON U.`name` = P.`name`
     WHERE U.`name` = 'wwx';
 
-===  ==  ============  =   ===
-wwx  15  wwx@example   F   wwx
-===  ==  ============  =   ===
+=======  =====  ===========  =====   ======
+name      age   email        sex     wechat
+=======  =====  ===========  =====   ======
+wwx       15    wwx@example   F       wwx
+=======  =====  ===========  =====   ======
 
 LEFT JOIN(左连接)
 >>>>>>>>>>>>>>>>>>>
 
-``LEFT JOIN` 关键字从左表（table1）返回所有的行，即使右表（table2）中没有匹配。如果右表中没有匹配，则结果为 ``NULL``。
+``LEFT JOIN`` 关键字从左表（table1）返回所有的行，即使右表（table2）中没有匹配。如果右表中没有匹配，则结果为 ``NULL``。
 
 .. image:: ./_static/img/mysql/leftjoin.gif
 
@@ -121,10 +123,12 @@ LEFT JOIN(左连接)
     ON U.`name` = P.`name`
     WHERE U.`name` LIKE 'wwx%';
 
-======= ==  =========== ==== ====
-wwxiong 25  null        null null
-wwx     15  wwx@example F    wwx
-======= ==  =========== ==== ====
+=======  =====  ===========  =====   ======
+name      age   email        sex     wechat
+=======  =====  ===========  =====   ======
+wwxiong  25     null          null    null
+wwx      15     wwx@example   F       wwx
+=======  =====  ===========  =====   ======
 
 RIGHT JOIN(右连接)
 >>>>>>>>>>>>>>>>>>>
@@ -141,9 +145,11 @@ RIGHT JOIN(右连接)
     ON U.`name` = P.`name`
     WHERE P.`name` LIKE 'xxx';
 
-===== ====  =========== ==== ====
-null  null  xxx@example F    xxx
-===== ====  =========== ==== ====
+=======  =====  ===========  =====   ======
+name      age   email        sex     wechat
+=======  =====  ===========  =====   ======
+null      null  xxx@example  F       xxx
+=======  =====  ===========  =====   ======
 
 UNION(联合)
 >>>>>>>>>>>>>
@@ -152,7 +158,7 @@ UNION(联合)
 
 .. attention::
 
-    请注意，``UNION`` 内部的每个 ``SELECT`` 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 ``SELECT`` 语句中的列的顺序必须相同。
+    ``UNION`` 内部的每个 ``SELECT`` 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 ``SELECT`` 语句中的列的顺序必须相同。
 
 .. code::
 
@@ -193,11 +199,13 @@ GROUP BY(分组)
 
     SELECT `name`, `age`, COUNT(1) AS nums FROM `User` GROUP BY `name`;
 
-==========  ==  =
+==========  === ====
+name        age nums
+==========  === ====
 dracarysX   21  2
 wwxiong     25  2
 xhq         27  2
-==========  ==  =
+==========  === ====
 
 HAVING
 
@@ -207,11 +215,13 @@ HAVING
 
     SELECT `name`, `age`FROM `User` GROUP BY `name` HAVING COUNT(1) > 1 ;
 
-==========  ==
+==========  ===
+name        age
+==========  ===
 dracarysX   21
 wwxiong     25
 xhq         27
-==========  ==
+==========  ===
 
 行列转换
 ------------
@@ -242,11 +252,13 @@ SUM CASE::
     ON EU.User_id = U.id
     GROUP BY EU.User_id;
 
-==========  ====  ====  ====  ====
-wwxiong     null  null  null  null
-dracarysX   20    30    40    60
-xhq         70    80    90    100
-==========  ====  ====  ====  ====
+==========  ======  ======  ======  ======
+name         语文    数学    英语     综合
+==========  ======  ======  ======  ======
+wwxiong     null    null    null    null
+dracarysX   20      30      40      60
+xhq         70      80      90      100
+==========  ======  ======  ======  ======
 
 批量操作
 -----------
