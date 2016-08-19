@@ -33,6 +33,14 @@ RabbitMQ学习
 
 **exchange**
 
+生产者不和queue接触, 消息全部是通过exchange转到对应的queue的. 每一个队列都和一个或者多个exchange绑定在一起. 声明一个queue的时候, 它已经和default exchange绑定在一起了。exchange的属性:
+
+- Name # 名称
+- Durability (exchanges survive broker restart)  # broker 启动后启用
+- Auto-delete (exchange is deleted when all queues have finished using it)  # 所有相关queue完成后删除
+- Arguments (these are broker-dependent)  # broker依赖
+
+
 
 
 安装
