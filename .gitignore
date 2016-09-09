@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 *.log
 npm-debug.log*
 
@@ -46,3 +46,6 @@ sphinx-py-sort/_build/
 
 # vscode文件
 .vscode
+
+# python compile file
+*.pyc
