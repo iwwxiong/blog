@@ -23,7 +23,7 @@ OS X: ~/Library/Application Support/Sublime Text 3
 
 ### 初始化仓库
 
-    > cd /Users
+    > cd /User
     > git init
 
 添加`.gitignore`文件，忽略掉下列文件：
@@ -48,7 +48,7 @@ OS X: ~/Library/Application Support/Sublime Text 3
 
 ### 其它设备同步配置
 
-    > cd /Users
+    > cd /User
     # 这里可备份之前配置
     > git clone https://git.coding.net/xxxxxx.git
 
