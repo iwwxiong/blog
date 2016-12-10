@@ -31,7 +31,7 @@
 
 下面命令是为我们创建一个名称为`dracarysX_mysql`镜像，共享本地3306端口，并且挂在数据文件到本地。数据库创建时候设置root密码为`dracarysX`。（因本地无此镜像，设置镜像仓库为`daocloud.io/mysql:5.7.14`）
 
-	docker run --name dracyarsX_mysql -e MYSQL_ROOT_PASSWORD=Foxconn123 -d -p 3306:3306 -v /Users/dracarysX/Document/mysql:/var/lib/mysql daocloud.io/mysql:5.7.14
+	docker run --name dracyarsX_mysql -e MYSQL_ROOT_PASSWORD=dracarysX -d -p 3306:3306 -v /Users/dracarysX/Document/mysql:/var/lib/mysql daocloud.io/mysql:5.7.14
 	
 拷贝文件`docker cp`
 
