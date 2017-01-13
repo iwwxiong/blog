@@ -45,8 +45,18 @@
 
 ### 命令列表
 
-    lsvirtualenv:列出虚拟环境列表
-    mkvirtualenv :新建虚拟环境
-    workon [虚拟环境名称]:切换虚拟环境
-    rmvirtualenv :删除虚拟环境
-    deactivate: 离开虚拟环境
+    lsvirtualenv：列出虚拟环境列表
+    mkvirtualenv：新建虚拟环境
+    workon [虚拟环境名称]：切换虚拟环境
+    rmvirtualenv：删除虚拟环境
+    deactivate：离开虚拟环境
+
+## 多版本环境
+
+有时候工作中需要使用`Python2.x`或者`3.x`版本的环境，共同环境下容易产生包冲突问题。这时候我们就需要用`virtualenv`搭建虚拟且独立的多个版本 python 环境，使每个项目特有环境与其他项目独立开来。
+
+    > mkdir python3_env
+    > cd python3_env
+    > virtualenv --no-site-packages --python=/usr/local/bin/python3 venv  # 指定python版本即可。
+
+
