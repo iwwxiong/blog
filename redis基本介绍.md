@@ -31,7 +31,7 @@ ubuntu下安装命令：
     
 ### docker安装
 
-[docker安装redis](https://github.com/dracarysX/blog/blob/master/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA#docker安装redis)
+[docker安装redis](https://github.com/dracarysX/blog/blob/master/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA.md#docker安装redis)
 
 ### redis配置
 
