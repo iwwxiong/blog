@@ -75,3 +75,14 @@
 
 	docker run --name redis -e REDIS_PASS=password -d -p 6379:6379 -v `PWD`/dev/Redis/data:/var/lib/redis -v `PWD`/dev/Redis/log:/var/log/redis/ -v `PWD`/dev/Redis/conf/redis.conf:/etc/redis/redis.conf daocloud.io/daocloud/dao-redis:master-init --appendonly yes
 
+## docker安装tomcat
+
+下面例子是安装`daocloud`上`tomcat`的镜像实例：
+
+	docker run --name tomcat7 -d -v ~/dev/tomcat:/usr/local/tomcat -p 8080:8080 daocloud.io/library/tomcat:latest
+
+配置，app和日志都挂载到本地，然后更改`tomcat/conf/tomcat-users.xml`增加一个管理用户：
+
+	<role rolename="manager-gui"/>
+	<user username="admin" password="password" roles="manager-gui"/>
+
