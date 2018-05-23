@@ -1,6 +1,4 @@
-# Redis基本介绍
-
-## Redis简介
+# Redis基本介绍及五种对象类型及其底层实现
 
 Remote Dictionary Server(Redis) 是一个由Salvatore Sanfilippo写的key-value存储系统。Redis是一个开源的使用ANSIC语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。它通常被称为数据结构服务器，因为值（value）可以是 字符串( `String` ), 哈希( `Map` ), 列表( `list` ), 集合( `sets` ) 和 有序集合( `sorted sets` )等类型。学习参考[Redis设计与实现](http://redisbook.readthedocs.io)。
 
@@ -17,33 +15,28 @@ Remote Dictionary Server(Redis) 是一个由Salvatore Sanfilippo写的key-value�
 3. 原子 – Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子性执行；
 4. 丰富的特性 – Redis还支持 publish/subscribe, 通知, key 过期等等特性。
 
-## Radis安装，配置
+## Redis对象底层数据结构
 
-### unubtu安装
+底层数据结构共有八种，如下表所示：
 
-ubuntu下安装命令：
-
-    > sudo apt-get update
-    > sudo apt-get install redis-server
-    # 测试连接
-    > redis-cli
-    > redis 127.0.0.1:6379>
-    
-### docker安装
-
-[docker安装redis](https://github.com/dracarysX/blog/blob/master/docker%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA.md#docker安装redis)
-
-### redis配置
-
-redis配置文件默认保存在 `/etc/redis/redis.conf` 。默认端口：6379。当然也可以使用命令来配置：
-
-    > CONFIG SET NAME VALUE
+|编码常量                  |	编码所对应的底层数据结构  |
+|-------------------------| ---------------------------|
+|REDIS_ENCODING_INT	      | long 类型的整数             |
+|REDIS_ENCODING_EMBSTR	  | embstr 编码的简单动态字符串  |
+|REDIS_ENCODING_RAW	      | 简单动态字符串              |
+|REDIS_ENCODING_HT	      | 字典                       |
+|REDIS_ENCODING_LINKEDLIST|	双端链表                    |
+|REDIS_ENCODING_ZIPLIST	  | 压缩列表                    |
+|REDIS_ENCODING_INTSET	  | 整数集合                    |
+|REDIS_ENCODING_SKIPLIST  |	跳跃表和字典                |
 
 ## Radis数据类型
 
 ### String(字符串)
 
 string是redis最基本的类型，一个键最大能存储512M。string类型是二进制安全的，可以包含任何数据。
+
+底层实现：如果字符串可以转换成`long`类型，则底层用`long`储存，如果字符串对象的长度小于39字节，就用embstr对象。否则用传统的raw对象。
 
 常用命令：
 
@@ -57,16 +50,20 @@ string是redis最基本的类型，一个键最大能存储512M。string类型�
 
 `Redis hash`是一个`string`类型的`field`和`value`的映射表，`hash`特别适合用于存储对象。
 
-    > HMSET user:1 wwx 20
-    ok
-    > HGETALL user:1
-    "wwx"
-    "20"
-    # user:1 为键值
+底层实现：压缩链表（ziplist）或哈希表（hashtable）。ziplist中的哈希对象是按照key1,value1,key2,value2这样的顺序存放来存储的。当对象数目不多且内容不大时，这种方式效率是很高的。
+
+```bash
+> HMSET user:1 wwx 20
+ok
+> HGETALL user:1
+"wwx"
+"20"
+# user:1 为键值
+```
 
 常用命令：
 
-1. 	hget：获取存储在哈希表中指定字段的值
+1. hget：获取存储在哈希表中指定字段的值
 2. hset：将哈希表 `key` 中的字段 `field` 的值设为 `value`
 3. hgetall：获取在哈希表中指定 `key` 的所有字段和值
 
@@ -76,22 +73,26 @@ string是redis最基本的类型，一个键最大能存储512M。string类型�
 
 例子：
 
-    > hset book name "c语言"
-    > hset book size 512
-    > hset book publish_date "2001"
-    > hgetall
-    "name"
-    "c语言"
-    "size"
-    "512"
-    "publish_date"
-    "2001"
-    > hget book size
-    "512"
+```bash
+> hset book name "c语言"
+> hset book size 512
+> hset book publish_date "2001"
+> hgetall
+"name"
+"c语言"
+"size"
+"512"
+"publish_date"
+"2001"
+> hget book size
+"512"
+```
 
 ### List(列表)
 
 Redis 列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素导列表的头部（左边）或者尾部（右边）。类似 `Python` 的list结构
+
+底层实现：压缩列表（ziplist）或者双端链表（linkedlist）。ziplist是一种压缩链表，它的好处是更能节省内存空间，因为它所存储的内容都是在连续的内存区域当中的。当列表对象元素不大，每个元素也不大的时候，就采用ziplist存储。但当数据量过大时就ziplist就不是那么好用了。因为为了保证他存储内容在内存中的连续性，插入的复杂度是O(N)。
 
 常用命令：
 
@@ -104,6 +105,8 @@ Redis 列表是简单的字符串列表，按照插入顺序排序。你可以�
 ### Set(集合)
 
 Redis的Set是string类型的无序集合。集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。
+
+底层实现：整数集合（intset）或者哈希表（hashtable）。intset是一个整数集合，里面存的为某种同一类型的整数，支持16、32、64三种长度的整数
 
 常用命令：
 
@@ -119,6 +122,8 @@ Redis的Set是string类型的无序集合。集合是通过哈希表实现的，
 ### zset(sortet set有序集合)
 
 Redis zset 和 set 一样也是string类型元素的集合,且不允许重复的成员。不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。zset的成员是唯一的,但分数(score)却可以重复。
+
+底层实现：有序集合的编码可能两种，一种是压缩列表（ziplist），另一种是跳跃表（skiplist）与字典（dict）的结合。
 
 常用命令：
 
@@ -147,13 +152,15 @@ Redis 的 SUBSCRIBE 命令可以让客户端订阅任意数量的频道， 每�
 
 每个 `Redis` 服务器进程都维持着一个表示服务器状态的 `redis.h/redisServer` 结构， 结构的 `pubsub_channels` 属性是一个字典， 这个字典就用于保存订阅频道的信息:
 
-    {
-        'pubsub_channels': {
-            "channel1": ["client1", "client2", "client3"],
-            "channel2": ["client4", "client5", "client6"],
-            "channel3": ["client1", "client2", "client4", "client5"]
-        }
+```json
+{
+    'pubsub_channels': {
+        "channel1": ["client1", "client2", "client3"],
+        "channel2": ["client4", "client5", "client6"],
+        "channel3": ["client1", "client2", "client4", "client5"]
     }
+}
+```
 
 `pubsub_channels` 示例中有 `channel1` , `channel2` , `channel3` 3个频道。然后 `client1` , `client2` , `client3` 同时订阅了 `channel1` 频道。同时一个客户端可以订阅多个频道，一个频道也可以被多个客户端订阅。
 
@@ -167,7 +174,9 @@ Redis 的 SUBSCRIBE 命令可以让客户端订阅任意数量的频道， 每�
 
 比如说，对于以下这个 `pubsub_channels` 实例， 如果某个客户端执行命令:
 
-    > PUBLISH channel1 "hello world" 
+```
+PUBLISH channel1 "hello world" 
+```
 
 那么 `client1` 、 `client2` 和 `client3` 三个客户端都将接收到 `hello world` 信息。
 
@@ -175,20 +184,26 @@ Redis 的 SUBSCRIBE 命令可以让客户端订阅任意数量的频道， 每�
 
 `UNSUBSCRIBE` 退订频道，例子如下:
 
-    > UNSUBSCRIBE channel1
+```
+UNSUBSCRIBE channel1
+```
 
 ### 订阅模式
 
 `redisServer.pubsub_patterns` 属性是一个链表，链表中保存着所有和模式相关的信息。链表中的每个节点都包含一个 `redis.h/pubsubPattern` 结构:
 
-    typedef struct pubsubPattern {
-        redisClient *client;
-        robj *pattern;
-    } pubsubPattern;
+```
+typedef struct pubsubPattern {
+    redisClient *client;
+    robj *pattern;
+} pubsubPattern;
+```
 
 `client` 属性保存着订阅模式的客户端，而 `pattern` 属性则保存着被订阅的模式。模式订阅命令如下:
 
-    > PSUBSCRIBE shop.*  # 订阅shop.*模式
+```
+PSUBSCRIBE shop.*  # 订阅shop.*模式
+```
 
 ### 发布信息到模式
 
@@ -200,7 +215,9 @@ Redis 的 SUBSCRIBE 命令可以让客户端订阅任意数量的频道， 每�
 
 ### 退订模式
 
-    > PUNSUBSCRIBE shop.*
+```
+PUNSUBSCRIBE shop.*
+```
 
 ## Summary
 
@@ -237,3 +254,7 @@ Redis 的 SUBSCRIBE 命令可以让客户端订阅任意数量的频道， 每�
     > flushdb
     # 返回键空间里现有的键值对数量
     > dbsize
+
+## 总结
+
+简单介绍了Redis的五种对象类型和它们的底层实现。事实上，Redis的高效性和灵活性正是得益于对于同一个对象类型采取不同的底层结构，并在必要的时候对二者进行转换；以及各种底层结构对内存的合理利用。
